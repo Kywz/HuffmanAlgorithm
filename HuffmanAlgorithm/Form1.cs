@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using HuffmanAlgorithm.HuffmanCode;
 
 namespace HuffmanAlgorithm
 {
@@ -15,6 +16,23 @@ namespace HuffmanAlgorithm
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            outputAbsoluteRTB.Clear();
+            string inputString = inputRTB.Text;
+            List<HuffmanElement> HuffmanList = HuffmanCodeMain.getHuffmanElements(inputString);
+            List<HuffmanElement> HuffmanListTree = HuffmanCodeMain.getHuffmanElements(inputString);
+            HuffmanList = HuffmanList.OrderBy(instance => instance.frequency).ToList();
+            foreach(HuffmanElement huff in HuffmanList)
+            {
+                outputAbsoluteRTB.AppendText(huff.HuffmanAbsFreqOutput()+"\n");
+            }
+            foreach(HuffmanElement huff in HuffmanList)
+            {
+
+            }
         }
     }
 }

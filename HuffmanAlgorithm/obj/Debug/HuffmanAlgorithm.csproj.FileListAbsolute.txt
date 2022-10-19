@@ -1,0 +1,10 @@
+D:\Programming\HuffmanAlgorithm\HuffmanAlgorithm\obj\Debug\HuffmanAlgorithm.csprojAssemblyReference.cache
+D:\Programming\HuffmanAlgorithm\HuffmanAlgorithm\obj\Debug\HuffmanAlgorithm.Form1.resources
+D:\Programming\HuffmanAlgorithm\HuffmanAlgorithm\obj\Debug\HuffmanAlgorithm.Properties.Resources.resources
+D:\Programming\HuffmanAlgorithm\HuffmanAlgorithm\obj\Debug\HuffmanAlgorithm.csproj.GenerateResource.cache
+D:\Programming\HuffmanAlgorithm\HuffmanAlgorithm\obj\Debug\HuffmanAlgorithm.csproj.CoreCompileInputs.cache
+D:\Programming\HuffmanAlgorithm\HuffmanAlgorithm\bin\Debug\HuffmanAlgorithm.exe.config
+D:\Programming\HuffmanAlgorithm\HuffmanAlgorithm\bin\Debug\HuffmanAlgorithm.exe
+D:\Programming\HuffmanAlgorithm\HuffmanAlgorithm\bin\Debug\HuffmanAlgorithm.pdb
+D:\Programming\HuffmanAlgorithm\HuffmanAlgorithm\obj\Debug\HuffmanAlgorithm.exe
+D:\Programming\HuffmanAlgorithm\HuffmanAlgorithm\obj\Debug\HuffmanAlgorithm.pdb
