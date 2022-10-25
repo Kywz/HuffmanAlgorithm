@@ -52,6 +52,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="HuffmanCode\HuffmanTree.cs" />
     <Compile Include="HuffmanCode\HuffmanCodeMain.cs" />
     <Compile Include="HuffmanCode\IHuffmanElement.cs" />
     <Compile Include="Program.cs" />

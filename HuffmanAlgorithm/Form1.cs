@@ -23,16 +23,26 @@ namespace HuffmanAlgorithm
             outputAbsoluteRTB.Clear();
             string inputString = inputRTB.Text;
             List<HuffmanElement> HuffmanList = HuffmanCodeMain.getHuffmanElements(inputString);
-            List<HuffmanElement> HuffmanListTree = HuffmanCodeMain.getHuffmanElements(inputString);
             HuffmanList = HuffmanList.OrderBy(instance => instance.frequency).ToList();
             foreach(HuffmanElement huff in HuffmanList)
             {
                 outputAbsoluteRTB.AppendText(huff.HuffmanAbsFreqOutput()+"\n");
             }
-            foreach(HuffmanElement huff in HuffmanList)
+            if (HuffmanList.Count < 2)
             {
-
+                outputRTB.AppendText("Кількість ідентичних елементів в тексті повинна бути більше двох");
             }
+            else
+            {
+                List<HuffmanElement> HuffmanListTree = HuffmanTree.getHuffmanTree(HuffmanList);
+
+                foreach (HuffmanElement huff in HuffmanListTree)
+                {
+                    outputRTB.AppendText(huff.HuffmanAbsFreqOutput() + "\n");
+                }
+            }
+            // Сделать проверку на 0 элементов в списке
+
         }
     }
 }

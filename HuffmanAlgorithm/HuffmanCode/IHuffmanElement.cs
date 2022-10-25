@@ -11,7 +11,7 @@ namespace HuffmanAlgorithm.HuffmanCode
         string name { get; set; }
         int frequency { get; set; }
         string code { get; set; }
-        bool leftRight { get; set; }
+        char leftRight { get; set; }
         HuffmanElement parent { get; set; }
 
     }
@@ -21,17 +21,23 @@ namespace HuffmanAlgorithm.HuffmanCode
         public string name { get; set; }
         public int frequency { get; set; }
         public string code { get; set; }
-        public bool leftRight { get; set; }
+        public char leftRight { get; set; }
         public HuffmanElement parent { get; set; }
 
-        public HuffmanElement(char Name)
+        public HuffmanElement(char name)
         {
-            this.name = Name.ToString();
+            this.name = name.ToString();
+            leftRight = 'n';
+        }
+
+        public HuffmanElement(string name)
+        {
+            this.name = name;
         }
 
         public string HuffmanAbsFreqOutput()
         {
-            return name.ToString() + " : " + frequency.ToString();
+            return "(" + name.ToString() + ") : " + " |Frequency: " + frequency.ToString() + " |LeftRight: " + leftRight.ToString();
         }
 
     }
