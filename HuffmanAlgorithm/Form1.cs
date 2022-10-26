@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,28 +22,62 @@ namespace HuffmanAlgorithm
         private void button1_Click(object sender, EventArgs e)
         {
             outputAbsoluteRTB.Clear();
+            outputRTB.Clear();
+            outputRTS.Clear();
             string inputString = inputRTB.Text;
-            List<HuffmanElement> HuffmanList = HuffmanCodeMain.getHuffmanElements(inputString);
-            HuffmanList = HuffmanList.OrderBy(instance => instance.frequency).ToList();
-            foreach(HuffmanElement huff in HuffmanList)
+            List<HuffmanElement> HuffmanListTree = HuffmanCodeMain.getHuffmanElements(inputString);
+            HuffmanListTree = HuffmanListTree.OrderBy(instance => instance.frequency).ToList();
+            foreach(HuffmanElement huff in HuffmanListTree)
             {
                 outputAbsoluteRTB.AppendText(huff.HuffmanAbsFreqOutput()+"\n");
             }
-            if (HuffmanList.Count < 2)
+            if (HuffmanListTree.Count < 2)
             {
                 outputRTB.AppendText("Кількість ідентичних елементів в тексті повинна бути більше двох");
             }
             else
             {
-                List<HuffmanElement> HuffmanListTree = HuffmanTree.getHuffmanTree(HuffmanList);
+                HuffmanListTree = HuffmanTree.getHuffmanTree(HuffmanListTree);
+                BitArray encodedText = HuffmanTree.Encode(inputString, HuffmanListTree);
+
+                foreach (bool lr in encodedText)
+                {
+                    if (lr == false)
+                    {
+                        outputRTB.AppendText("0");
+                    }
+                    else if (lr == true)
+                    {
+                        outputRTB.AppendText("1");
+                    }
+                }
 
                 foreach (HuffmanElement huff in HuffmanListTree)
                 {
-                    outputRTB.AppendText(huff.HuffmanAbsFreqOutput() + "\n");
+                    foreach (string s in huff.printTree())
+                    {
+                        outputAbsoluteRTB.AppendText(s + "\n");
+                    }
+                    outputAbsoluteRTB.AppendText("==================================================");
+                    
                 }
+                outputRTS.AppendText(HuffmanTree.Decode(encodedText, HuffmanListTree));
+                
             }
-            // Сделать проверку на 0 элементов в списке
 
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            clearAllTB();
+        }
+
+        private void clearAllTB()
+        {
+            outputAbsoluteRTB.Clear();
+            outputRTB.Clear();
+            outputRTS.Clear();
+            inputRTB.Clear();
         }
     }
 }

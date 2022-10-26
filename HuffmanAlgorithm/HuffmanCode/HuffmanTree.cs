@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,19 +9,15 @@ namespace HuffmanAlgorithm.HuffmanCode
 {
     class HuffmanTree
     {
-        public static List<HuffmanElement> getHuffmanTree (List<HuffmanElement> inputList)
+        public static List<HuffmanElement> getHuffmanTree(List<HuffmanElement> inputList)
         {
-            //HuffmanElement firstBuffer;
-            //HuffmanElement secondBuffer;
             HuffmanElement newElementBuffer;
             List<HuffmanElement> bufferList = inputList;
-            //Сортувати, кожен раз при сортуванні 2 перших елемента можна об'єднати, тому що вони будуть найменші
+            List<HuffmanElement> buffChildList = new List<HuffmanElement>();
+
             while (inputList.Count() != 1)
             {
                 inputList = inputList.OrderBy(instance => instance.frequency).ToList();
-
-                //firstBuffer = inputList.ElementAt(0);
-                //secondBuffer = inputList.ElementAt(1);
 
                 newElementBuffer = new HuffmanElement(inputList.ElementAt(0).name + inputList.ElementAt(1).name);
                 newElementBuffer.frequency = inputList.ElementAt(0).frequency + inputList.ElementAt(1).frequency;
@@ -33,78 +30,75 @@ namespace HuffmanAlgorithm.HuffmanCode
 
                 bufferList.Add(newElementBuffer);
 
+                bufferList.Last().child.Add(bufferList.Find(instance => instance.name.Equals(inputList.ElementAt(0).name)));
+                bufferList.Last().child.Add(bufferList.Find(instance => instance.name.Equals(inputList.ElementAt(1).name)));
+
+
                 inputList.RemoveRange(0, 2);
                 inputList.Add(newElementBuffer);
+                buffChildList.Clear();
             }
 
-            inputList = bufferList;
-            return inputList;
-            /*inputList = inputList.OrderBy(instance => instance.frequency).ToList();
-            List<HuffmanElement> bufferList = inputList;
-            HuffmanElement firstBuffer;
-            HuffmanElement secondBuffer;
-            HuffmanElement newElementBuffer;
-            firstBuffer = inputList.First();
-            int firstIndex = 0;
-            secondBuffer = inputList.Last();
-            int secondIndex = 0;
-            int overallFrequency = 0;
+            return bufferList;
+        }
 
-            foreach (HuffmanElement huff in inputList)
+        public static BitArray Encode(string source, List<HuffmanElement> encodingTree)
+        {
+            string buffString;
+            List<bool> encodedSource = new List<bool>();
+            foreach (char c in source)
             {
-                overallFrequency += huff.frequency;
-            }
-
-
-                while (inputList.Count != 1)
-            {
-                Console.WriteLine("=============================================");
-                Console.WriteLine("FBF: " + firstBuffer.frequency + " ||| SBF: " + secondBuffer.frequency);
-                Console.WriteLine("Overall: " + overallFrequency);
-                Console.WriteLine("=============================================");
-                foreach (HuffmanElement huff in inputList)
+                buffString = encodingTree.Find(instance => instance.name.Equals(c.ToString())).getEncoding();
+                buffString = reverseString(buffString);
+                foreach (char cs in buffString)
                 {
-                    //(firstBuffer.frequency > huff.frequency) && !(huff.Equals(firstBuffer)) && !(huff.Equals(secondBuffer)) || (huff.leftRight.Equals('n'))
-                    if (huff.frequency <= firstBuffer.frequency)
+                    if (cs.Equals('0'))
                     {
-                        firstBuffer = huff;
-                        firstIndex = inputList.IndexOf(huff);
-                        //firstIndex = inputList.FindIndex(obj => obj.name.Contains(huff.name));
+                        encodedSource.Add(false);
                     }
-                    //(secondBuffer.frequency > huff.frequency) && !(huff.Equals(firstBuffer)) && !(huff.Equals(secondBuffer)) || (huff.leftRight.Equals('n'))
-                    if ((firstBuffer != huff) && (huff.frequency <= secondBuffer.frequency))
+                    else if (cs.Equals('1'))
                     {
-                        secondBuffer = huff;
-                        secondIndex = inputList.IndexOf(huff);
-                        //secondIndex = inputList.FindIndex(obj => obj.name.Contains(huff.name));
+                        encodedSource.Add(true);
                     }
                 }
-                inputList.Remove(firstBuffer);
-                inputList.Remove(secondBuffer);
-
-                newElementBuffer = new HuffmanElement(firstBuffer.name + secondBuffer.name);
-                newElementBuffer.frequency = firstBuffer.frequency + secondBuffer.frequency;
-
-
-                bufferList.ElementAt(bufferList.IndexOf(firstBuffer)).parent = newElementBuffer;
-                bufferList.ElementAt(bufferList.IndexOf(firstBuffer)).leftRight = 'l';
-
-                bufferList.ElementAt(bufferList.IndexOf(secondBuffer)).parent = newElementBuffer;
-                bufferList.ElementAt(bufferList.IndexOf(secondBuffer)).leftRight = 'r';
-
-                firstBuffer = inputList.First();
-                secondBuffer = inputList.Last();
-
-                bufferList.Add(newElementBuffer);
-                inputList.Add(newElementBuffer);
             }
-            Console.WriteLine("=============================================");
-            foreach (HuffmanElement huff in bufferList)
+            BitArray bits = new BitArray(encodedSource.ToArray());
+
+            return bits;
+        }
+        private static string reverseString(string s)
+        {
+            char[] charArray = s.ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
+        }
+
+        public static string Decode(BitArray bits, List<HuffmanElement> HuffmanTree)
+        {
+            HuffmanTree = HuffmanTree.OrderBy(instance => instance.name.Length).ToList();
+            string output = "";
+            HuffmanElement buffElement = HuffmanTree.Last();
+
+            foreach (bool b in bits)
             {
-                Console.WriteLine("Freq: " + huff.frequency + " ||| Name: " + huff.name + " ||| leftRight: " + huff.leftRight);
+               
+                if (b == false)
+                {
+                    buffElement = buffElement.child.ElementAt(0);
+                }
+                else if (b == true)
+                {
+                    buffElement = buffElement.child.ElementAt(1);
+                }
+                if (buffElement.name.Length == 1)
+                {
+                    output += buffElement.name;
+                    buffElement = HuffmanTree.Last();
+                    continue;
+                }
             }
-            Console.WriteLine("=============================================");
-            return inputList;*/
+
+            return output;
         }
     }
 }
