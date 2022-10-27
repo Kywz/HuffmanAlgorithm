@@ -21,6 +21,8 @@ namespace HuffmanAlgorithm
 
         private void button1_Click(object sender, EventArgs e)
         {
+            label5.Text = "";
+            label6.Text = "";
             outputAbsoluteRTB.Clear();
             outputRTB.Clear();
             outputRTS.Clear();
@@ -51,6 +53,8 @@ namespace HuffmanAlgorithm
                         outputRTB.AppendText("1");
                     }
                 }
+                label5.Text = "Binary Encoded String Byte Count: " + HuffmanCodeMain.ToBinary(HuffmanCodeMain.ConvertToByteArray(inputString, Encoding.ASCII)).Length;
+                label6.Text = "Huffman Encoded String Byte Count: " + outputRTB.Text.Length;
 
                 foreach (HuffmanElement huff in HuffmanListTree)
                 {
@@ -78,6 +82,8 @@ namespace HuffmanAlgorithm
             outputRTB.Clear();
             outputRTS.Clear();
             inputRTB.Clear();
+            label5.Text = "";
+            label6.Text = "";
         }
     }
 }
