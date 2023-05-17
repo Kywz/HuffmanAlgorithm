@@ -9,6 +9,77 @@ namespace HuffmanAlgorithm.HuffmanCode
 {
     class HuffmanTree
     {
+        public static List<HuffmanElement> createHuffmanTree(List<String> key)
+        {
+            List<HuffmanElement> huffmanTree = new List<HuffmanElement>();
+            string[] words;
+            string[] splitWord = { "1001" };
+            HuffmanElement elementParent;
+            HuffmanElement elementLeft;
+            HuffmanElement elementRight;
+
+            foreach (string item in key)
+            {
+                words = item.Split(splitWord, StringSplitOptions.RemoveEmptyEntries);
+                
+                if (huffmanTree.Count != 0) {
+
+                    elementLeft = new HuffmanElement(words[1]);
+                    elementLeft.leftRight = 'l';
+                    elementLeft.parent = huffmanTree.Find(instance => instance.name.Equals(words[0]));
+
+                    elementRight = new HuffmanElement(words[2]);
+                    elementRight.leftRight = 'r';
+                    elementRight.parent = huffmanTree.Find(instance => instance.name.Equals(words[0]));
+
+                    huffmanTree.Find(instance => instance.name.Equals(words[0])).child.Add(elementLeft);
+                    huffmanTree.Find(instance => instance.name.Equals(words[0])).child.Add(elementRight);
+                    
+                    huffmanTree.Add(elementLeft);
+                    huffmanTree.Add(elementRight);
+                }
+                
+                else
+                {
+                    elementParent = new HuffmanElement(words[0]);
+
+                    elementLeft = new HuffmanElement(words[1]);
+                    elementLeft.leftRight = 'l';
+                    elementLeft.parent = elementParent;
+
+                    elementRight = new HuffmanElement(words[2]);
+                    elementRight.leftRight = 'r';
+                    elementRight.parent = elementParent;
+
+                    elementParent.child.Add(elementLeft);
+                    elementParent.child.Add(elementRight);
+
+                    huffmanTree.Add(elementParent);
+                    huffmanTree.Add(elementLeft);
+                    huffmanTree.Add(elementRight);
+                }
+            }
+
+            return huffmanTree;
+        }
+        
+        public static List<String> createHuffmanKey(List<HuffmanElement> inputList)
+        {
+            //end of word symbol 1001
+            //left child = 0; right child = 1;
+            string splitWord = "1001";
+            List<String> huffmanKey = new List<String>();
+            foreach (HuffmanElement huffElem in inputList)
+            {
+                if (huffElem.child.Count() == 2)
+                {
+                    huffmanKey.Add(huffElem.name + splitWord + huffElem.child.First().name + splitWord + huffElem.child.Last().name);
+                }
+            }
+
+            huffmanKey.Reverse(); //Reversing key for more tree-like structure
+            return huffmanKey;
+        }
         public static List<HuffmanElement> getHuffmanTree(List<HuffmanElement> inputList)
         {
             HuffmanElement newElementBuffer;

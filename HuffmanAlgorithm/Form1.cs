@@ -29,6 +29,7 @@ namespace HuffmanAlgorithm
             string inputString = inputRTB.Text;
             List<HuffmanElement> HuffmanListTree = HuffmanCodeMain.getHuffmanElements(inputString);
             HuffmanListTree = HuffmanListTree.OrderBy(instance => instance.frequency).ToList();
+            outputAbsoluteRTB.AppendText(HuffmanListTree.Count().ToString() + "\n"); // Виведення кількості елементів у рядку
             foreach(HuffmanElement huff in HuffmanListTree)
             {
                 outputAbsoluteRTB.AppendText(huff.HuffmanAbsFreqOutput()+"\n");
@@ -65,8 +66,19 @@ namespace HuffmanAlgorithm
                     outputAbsoluteRTB.AppendText("==================================================");
                     
                 }
-                outputRTS.AppendText(HuffmanTree.Decode(encodedText, HuffmanListTree));
-                
+                //
+                //outputRTS.AppendText(HuffmanTree.Decode(encodedText, HuffmanListTree));
+                //
+                outputRTS.AppendText(HuffmanTree.Decode(encodedText, HuffmanTree.createHuffmanTree(HuffmanTree.createHuffmanKey(HuffmanListTree)))); //TEST
+
+                //Виведення ключа
+                foreach (string key in HuffmanTree.createHuffmanKey(HuffmanListTree))
+                {
+                    outputKey.AppendText(key + "\n");
+                }
+                //
+                //HuffmanTree.createHuffmanTree(HuffmanTree.createHuffmanKey(HuffmanListTree));
+                //
             }
 
         }
@@ -82,6 +94,7 @@ namespace HuffmanAlgorithm
             outputRTB.Clear();
             outputRTS.Clear();
             inputRTB.Clear();
+            outputKey.Clear();
             label5.Text = "";
             label6.Text = "";
         }
