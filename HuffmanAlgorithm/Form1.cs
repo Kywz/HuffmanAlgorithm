@@ -27,12 +27,12 @@ namespace HuffmanAlgorithm
             outputRTB.Clear();
             outputRTS.Clear();
             string inputString = inputRTB.Text;
-            List<HuffmanElement> HuffmanListTree = HuffmanCodeMain.getHuffmanElements(inputString);
-            HuffmanListTree = HuffmanListTree.OrderBy(instance => instance.frequency).ToList();
-            outputAbsoluteRTB.AppendText(HuffmanListTree.Count().ToString() + "\n"); // Виведення кількості елементів у рядку
+            List<HuffmanElement> HuffmanListTree = HuffmanCodeMain.getHuffmanElements(inputString); // create frequency table
+            HuffmanListTree = HuffmanListTree.OrderBy(instance => instance.frequency).ToList(); // Sorting in ascending order
+            outputAbsoluteRTB.AppendText(HuffmanListTree.Count().ToString() + "\n"); // Output number of elements in text
             foreach(HuffmanElement huff in HuffmanListTree)
             {
-                outputAbsoluteRTB.AppendText(huff.HuffmanAbsFreqOutput()+"\n");
+                outputAbsoluteRTB.AppendText(huff.HuffmanAbsFreqOutput()+"\n"); // Frequency output
             }
             if (HuffmanListTree.Count < 2)
             {
@@ -42,7 +42,6 @@ namespace HuffmanAlgorithm
             {
                 HuffmanListTree = HuffmanTree.getHuffmanTree(HuffmanListTree);
                 BitArray encodedText = HuffmanTree.Encode(inputString, HuffmanListTree);
-
                 foreach (bool lr in encodedText)
                 {
                     if (lr == false)
@@ -66,19 +65,19 @@ namespace HuffmanAlgorithm
                     outputAbsoluteRTB.AppendText("==================================================");
                     
                 }
-                //
-                //outputRTS.AppendText(HuffmanTree.Decode(encodedText, HuffmanListTree));
-                //
-                outputRTS.AppendText(HuffmanTree.Decode(encodedText, HuffmanTree.createHuffmanTree(HuffmanTree.createHuffmanKey(HuffmanListTree)))); //TEST
 
+                outputRTS.AppendText(HuffmanTree.Decode(encodedText, HuffmanTree.createHuffmanTree(HuffmanTree.createHuffmanKey(HuffmanListTree)))); //TEST
+                
+                // Перевірка на відповідність текстів "вхід та вихід"
+                if (inputRTB.Text.Equals(outputRTS.Text))
+                {
+                    MessageBox.Show("Тексти відповідають один одному");
+                }
                 //Виведення ключа
                 foreach (string key in HuffmanTree.createHuffmanKey(HuffmanListTree))
                 {
                     outputKey.AppendText(key + "\n");
                 }
-                //
-                //HuffmanTree.createHuffmanTree(HuffmanTree.createHuffmanKey(HuffmanListTree));
-                //
             }
 
         }

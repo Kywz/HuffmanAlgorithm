@@ -7,24 +7,24 @@ namespace HuffmanAlgorithm.HuffmanCode
 {
     class HuffmanCodeMain
     {
-        public static List<HuffmanElement> getHuffmanElements(string inputText) //sensitive to register, N != n
+        public static List<HuffmanElement> getHuffmanElements(string inputText) // sensitive to register, N != n
         {
-            List<HuffmanElement> HuffmanList = new List<HuffmanElement>();
-            while (inputText.Length >= 1)
+            List<HuffmanElement> HuffmanList = new List<HuffmanElement>(); // New list for frequency table
+            while (inputText.Length >= 1) // Iterator for text scanning
             {
-                foreach (char c in inputText)
+                foreach (char c in inputText) // Get first letter of string
                 {
-                    HuffmanList.Add(new HuffmanElement(c));
-                    foreach (char newChar in inputText)
+                    HuffmanList.Add(new HuffmanElement(c)); // Adding new element to the list, its always new, because of deletion of all its iteration
+                    foreach (char newChar in inputText) // looking for all iteration of char c in inputText
                     {
                         if (newChar.Equals(c))
                         {
-                            HuffmanList.Last().frequency++;
+                            HuffmanList.Last().frequency++; // add frequency, if c = newChar
                         }
                     }
 
-                    inputText = inputText.Replace(c.ToString(), string.Empty);
-                    break;
+                    inputText = inputText.Replace(c.ToString(), string.Empty); // removing all iterations of c in inputText
+                    break; // break first foreach for correct cycle 
                 }
             }
 

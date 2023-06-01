@@ -84,30 +84,34 @@ namespace HuffmanAlgorithm.HuffmanCode
         {
             HuffmanElement newElementBuffer;
             List<HuffmanElement> bufferList = inputList;
-            List<HuffmanElement> buffChildList = new List<HuffmanElement>();
 
             while (inputList.Count() != 1)
             {
+                // Sorting list by ascending for proper work of Huffman algorithm
                 inputList = inputList.OrderBy(instance => instance.frequency).ToList();
 
+                // Creating new element from two elements
                 newElementBuffer = new HuffmanElement(inputList.ElementAt(0).name + inputList.ElementAt(1).name);
                 newElementBuffer.frequency = inputList.ElementAt(0).frequency + inputList.ElementAt(1).frequency;
 
+                // Changing child#0 internal vars in the output list
                 bufferList.Find(instance => instance.name.Equals(inputList.ElementAt(0).name)).parent = newElementBuffer;
                 bufferList.Find(instance => instance.name.Equals(inputList.ElementAt(0).name)).leftRight = 'l';
 
+                // Changing child#1 internal vars in the output list
                 bufferList.Find(instance => instance.name.Equals(inputList.ElementAt(1).name)).parent = newElementBuffer;
                 bufferList.Find(instance => instance.name.Equals(inputList.ElementAt(1).name)).leftRight = 'r';
 
+                // Adding created element to the output list
                 bufferList.Add(newElementBuffer);
-
+                
+                // Adding children to created element
                 bufferList.Last().child.Add(bufferList.Find(instance => instance.name.Equals(inputList.ElementAt(0).name)));
                 bufferList.Last().child.Add(bufferList.Find(instance => instance.name.Equals(inputList.ElementAt(1).name)));
 
-
+                // Preparation for next iteration
                 inputList.RemoveRange(0, 2);
                 inputList.Add(newElementBuffer);
-                buffChildList.Clear();
             }
 
             return bufferList;
@@ -146,29 +150,26 @@ namespace HuffmanAlgorithm.HuffmanCode
 
         public static string Decode(BitArray bits, List<HuffmanElement> HuffmanTree)
         {
-            HuffmanTree = HuffmanTree.OrderBy(instance => instance.name.Length).ToList();
+            HuffmanTree = HuffmanTree.OrderBy(instance => instance.name.Length).ToList(); // Sorting tree by name length, for no further use of frequencies
             string output = "";
             HuffmanElement buffElement = HuffmanTree.Last();
-
-            foreach (bool b in bits)
+            foreach (bool b in bits) // Iterator for looking through encoded text 
             {
-               
                 if (b == false)
                 {
-                    buffElement = buffElement.child.ElementAt(0);
+                    buffElement = buffElement.child.ElementAt(0); // Getting left child from parent
                 }
                 else if (b == true)
                 {
-                    buffElement = buffElement.child.ElementAt(1);
+                    buffElement = buffElement.child.ElementAt(1); // Geting right child from parent
                 }
-                if (buffElement.name.Length == 1)
+                if (buffElement.name.Length == 1) // Got to end of tree, length of name == 1 says that there is no next element possible
                 {
                     output += buffElement.name;
                     buffElement = HuffmanTree.Last();
                     continue;
                 }
             }
-
             return output;
         }
     }

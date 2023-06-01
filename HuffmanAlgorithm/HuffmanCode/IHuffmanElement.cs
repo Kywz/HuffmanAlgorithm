@@ -24,7 +24,7 @@ namespace HuffmanAlgorithm.HuffmanCode
         public HuffmanElement parent { get; set; }
         public List<HuffmanElement> child { get; set; }
 
-        public HuffmanElement(char name)
+        public HuffmanElement(char name) //class creation
         {
             this.name = name.ToString();
             leftRight = 'n';
@@ -43,7 +43,7 @@ namespace HuffmanAlgorithm.HuffmanCode
             return "(" + name.ToString() + ") : " + " |Frequency: " + frequency.ToString() + " |LeftRight: " + leftRight.ToString();
         }
 
-        public string getEncoding()
+        public string getEncoding() // Recursion
         {
             if (parent != null)
             {
