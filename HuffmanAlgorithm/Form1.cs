@@ -14,6 +14,7 @@ namespace HuffmanAlgorithm
 {
     public partial class Form1 : Form
     {
+        private List<DateTime> timeElapsed = new List<DateTime>();
         public Form1()
         {
             InitializeComponent();
@@ -21,6 +22,8 @@ namespace HuffmanAlgorithm
 
         private void button1_Click(object sender, EventArgs e)
         {
+            timeElapsed.Clear();
+            timeElapsed.Add(DateTime.Now);
             label5.Text = "";
             label6.Text = "";
             outputAbsoluteRTB.Clear();
@@ -67,11 +70,11 @@ namespace HuffmanAlgorithm
                 }
 
                 outputRTS.AppendText(HuffmanTree.Decode(encodedText, HuffmanTree.createHuffmanTree(HuffmanTree.createHuffmanKey(HuffmanListTree)))); //TEST
-                
+                timeElapsed.Add(DateTime.Now);
                 // Перевірка на відповідність текстів "вхід та вихід"
                 if (inputRTB.Text.Equals(outputRTS.Text))
                 {
-                    MessageBox.Show("Тексти відповідають один одному");
+                    richTextBox1.AppendText("Тексти відповідають один одному"); //debug
                 }
                 //Виведення ключа
                 foreach (string key in HuffmanTree.createHuffmanKey(HuffmanListTree))
@@ -79,7 +82,8 @@ namespace HuffmanAlgorithm
                     outputKey.AppendText(key + "\n");
                 }
             }
-
+            TimeSpan time = timeElapsed.ElementAt(1) - timeElapsed.ElementAt(0);
+            richTextBox1.AppendText("\n\nЧас виконання: " + time.TotalMinutes.ToString("f3") + " хв."); //debug
         }
 
         private void button3_Click(object sender, EventArgs e)
