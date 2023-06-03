@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 
@@ -30,6 +31,25 @@ namespace HuffmanAlgorithm.HuffmanCode
 
             return HuffmanList;
         }
+        
+        public static BitArray fromStringBinaryToBinary (string input)
+        {
+            List<bool> encodedSource = new List<bool>();
+
+            foreach (char c in input)
+            {
+                    if (c.Equals('0'))
+                    {
+                        encodedSource.Add(false);
+                    }
+                    else if (c.Equals('1'))
+                    {
+                        encodedSource.Add(true);
+                    }
+            }
+            return new BitArray(encodedSource.ToArray());
+        }
+        
         public static byte[] ConvertToByteArray(string str, Encoding encoding)
         {
             return encoding.GetBytes(str);

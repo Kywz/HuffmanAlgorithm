@@ -12,21 +12,28 @@ using HuffmanAlgorithm.HuffmanCode;
 
 namespace HuffmanAlgorithm
 {
-    public partial class Form1 : Form
+    public partial class form_Main : Form
     {
         private List<DateTime> timeElapsed = new List<DateTime>();
-        public Form1()
+        public form_Main()
         {
             InitializeComponent();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (outputKey.Text.Length == 0)
+            {
+                MessageBox.Show("You've didn't add the key for encoding");
+                return;
+            }
+            else if (inputRTB.Text.Length == 0)
+            {
+                MessageBox.Show("You've didn't add text for encoding");
+                return;
+            }
             timeElapsed.Clear();
             timeElapsed.Add(DateTime.Now);
-            label5.Text = "";
-            label6.Text = "";
-            outputAbsoluteRTB.Clear();
             outputRTB.Clear();
             outputRTS.Clear();
             string inputString = inputRTB.Text;
@@ -56,18 +63,8 @@ namespace HuffmanAlgorithm
                         outputRTB.AppendText("1");
                     }
                 }
-                label5.Text = "Binary Encoded String Byte Count: " + HuffmanCodeMain.ToBinary(HuffmanCodeMain.ConvertToByteArray(inputString, Encoding.ASCII)).Length;
-                label6.Text = "Huffman Encoded String Byte Count: " + outputRTB.Text.Length;
-
-                foreach (HuffmanElement huff in HuffmanListTree)
-                {
-                    foreach (string s in huff.printTree())
-                    {
-                        outputAbsoluteRTB.AppendText(s + "\n");
-                    }
-                    outputAbsoluteRTB.AppendText("==================================================");
-                    
-                }
+                //.....label5.Text = "Binary Encoded String Byte Count: " + HuffmanCodeMain.ToBinary(HuffmanCodeMain.ConvertToByteArray(inputString, Encoding.ASCII)).Length;
+                //.....label6.Text = "Huffman Encoded String Byte Count: " + outputRTB.Text.Length;
 
                 outputRTS.AppendText(HuffmanTree.Decode(encodedText, HuffmanTree.createHuffmanTree(HuffmanTree.createHuffmanKey(HuffmanListTree)))); //TEST
                 timeElapsed.Add(DateTime.Now);
@@ -98,8 +95,59 @@ namespace HuffmanAlgorithm
             outputRTS.Clear();
             inputRTB.Clear();
             outputKey.Clear();
-            label5.Text = "";
-            label6.Text = "";
+        }
+
+        private void button_CreateKey_Click(object sender, EventArgs e)
+        {
+            outputKey.Clear();
+            string inputString = inputRTB.Text;
+            List<HuffmanElement> HuffmanListTree = HuffmanCodeMain.getHuffmanElements(inputString); // create frequency table
+            HuffmanListTree = HuffmanListTree.OrderBy(instance => instance.frequency).ToList(); // Sorting in ascending order
+            if (HuffmanListTree.Count < 2)
+            {
+                outputAbsoluteRTB.AppendText("Кількість ідентичних елементів в тексті повинна бути більше двох");
+            }
+            else
+            {
+                HuffmanListTree = HuffmanTree.getHuffmanTree(HuffmanListTree);
+            }
+
+            foreach (string key in HuffmanTree.createHuffmanKey(HuffmanListTree))
+            {
+                outputKey.AppendText(key);
+            }
+
+            if (checkBox_WriteTreeInfo.Checked)
+            {
+                outputAbsoluteRTB.Clear();
+                foreach (HuffmanElement huff in HuffmanListTree)
+                {
+                    foreach (string s in huff.printTree())
+                    {
+                        outputAbsoluteRTB.AppendText(s + "\n");
+                    }
+                    outputAbsoluteRTB.AppendText("==================================================");
+                }
+            }
+        }
+
+        private void button_Decode_Click(object sender, EventArgs e)
+        {
+            outputRTS.Clear();
+            if (outputKey.Text.Length == 0)
+            {
+                MessageBox.Show("You've didn't add the key for decoding");
+                return;
+            }
+            else if (outputRTB.Text.Length == 0)
+            {
+                MessageBox.Show("You've didn't add text for decoding");
+                return;
+            }
+
+            //outputKey.Text.ToList().ToString();
+            outputRTS.AppendText(HuffmanTree.Decode(HuffmanCodeMain.fromStringBinaryToBinary(outputRTB.Text), HuffmanTree.createHuffmanTree(outputKey.Text.ToString().Split(new string[] {"101101"}, StringSplitOptions.RemoveEmptyEntries).ToList())));
+            timeElapsed.Add(DateTime.Now);
         }
     }
 }

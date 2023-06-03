@@ -21,6 +21,7 @@ namespace HuffmanAlgorithm.HuffmanCode
             foreach (string item in key)
             {
                 words = item.Split(splitWord, StringSplitOptions.RemoveEmptyEntries);
+                words[2] = words[2].Replace("101101", "");
                 
                 if (huffmanTree.Count != 0) {
 
@@ -59,7 +60,7 @@ namespace HuffmanAlgorithm.HuffmanCode
                     huffmanTree.Add(elementRight);
                 }
             }
-
+            
             return huffmanTree;
         }
         
@@ -68,16 +69,19 @@ namespace HuffmanAlgorithm.HuffmanCode
             //end of word symbol 1001
             //left child = 0; right child = 1;
             string splitWord = "1001";
+            string endWord = "101101";
             List<String> huffmanKey = new List<String>();
             foreach (HuffmanElement huffElem in inputList)
             {
                 if (huffElem.child.Count() == 2)
                 {
-                    huffmanKey.Add(huffElem.name + splitWord + huffElem.child.First().name + splitWord + huffElem.child.Last().name);
+                    huffmanKey.Add(huffElem.name + splitWord + huffElem.child.First().name + splitWord + huffElem.child.Last().name + endWord);
                 }
             }
 
             huffmanKey.Reverse(); //Reversing key for more tree-like structure
+            //huffmanKey.Add(huffmanKey.Last().Remove(huffmanKey.Last().Length - 6));  //asda sdaasda
+            //huffmanKey.RemoveAt(huffmanKey.Count() - 1);  //dfghfdhherherh
             return huffmanKey;
         }
         public static List<HuffmanElement> getHuffmanTree(List<HuffmanElement> inputList)
