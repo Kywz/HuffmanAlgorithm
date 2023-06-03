@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HuffmanAlgorithm.HuffmanCode
 {
@@ -80,8 +78,6 @@ namespace HuffmanAlgorithm.HuffmanCode
             }
 
             huffmanKey.Reverse(); //Reversing key for more tree-like structure
-            //huffmanKey.Add(huffmanKey.Last().Remove(huffmanKey.Last().Length - 6));  //asda sdaasda
-            //huffmanKey.RemoveAt(huffmanKey.Count() - 1);  //dfghfdhherherh
             return huffmanKey;
         }
         public static List<HuffmanElement> getHuffmanTree(List<HuffmanElement> inputList)

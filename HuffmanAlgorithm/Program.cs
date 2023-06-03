@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace HuffmanAlgorithm
@@ -9,7 +6,7 @@ namespace HuffmanAlgorithm
     static class Program
     {
         /// <summary>
-        /// Главная точка входа для приложения.
+        /// Main point for starting.
         /// </summary>
         [STAThread]
         static void Main()

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HuffmanAlgorithm.HuffmanCode
 {
@@ -16,7 +13,7 @@ namespace HuffmanAlgorithm.HuffmanCode
 
     }
 
-    class HuffmanElement:IHuffmanElement
+    public class HuffmanElement:IHuffmanElement
     {
         public string name { get; set; }
         public int frequency { get; set; }

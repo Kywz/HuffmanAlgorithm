@@ -58,7 +58,6 @@ namespace HuffmanAlgorithm.HuffmanCode
         {
             return string.Join(" ", data.Select(byt => Convert.ToString(byt, 2).PadLeft(8, '0')));
         }
-
     }
     
 }

@@ -8,3 +8,4 @@ D:\Programming\HuffmanAlgorithm\HuffmanAlgorithm\bin\Debug\HuffmanAlgorithm.pdb
 D:\Programming\HuffmanAlgorithm\HuffmanAlgorithm\obj\Debug\HuffmanAlgorithm.exe
 D:\Programming\HuffmanAlgorithm\HuffmanAlgorithm\obj\Debug\HuffmanAlgorithm.pdb
 D:\Programming\HuffmanAlgorithm\HuffmanAlgorithm\obj\Debug\HuffmanAlgorithm.form_Main.resources
+D:\Programming\HuffmanAlgorithm\HuffmanAlgorithm\obj\Debug\HuffmanAlgorithm.Form_DebugInfo.resources

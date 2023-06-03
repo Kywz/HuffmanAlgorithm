@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using HuffmanAlgorithm.HuffmanCode;
+using System.IO;
 
 namespace HuffmanAlgorithm
 {
@@ -18,9 +15,10 @@ namespace HuffmanAlgorithm
         public form_Main()
         {
             InitializeComponent();
+            comboBox_SaveSelection.Text = "Key";
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button_EncodeText_Click(object sender, EventArgs e)
         {
             if (outputKey.Text.Length == 0)
             {
@@ -39,11 +37,6 @@ namespace HuffmanAlgorithm
             string inputString = inputRTB.Text;
             List<HuffmanElement> HuffmanListTree = HuffmanCodeMain.getHuffmanElements(inputString); // create frequency table
             HuffmanListTree = HuffmanListTree.OrderBy(instance => instance.frequency).ToList(); // Sorting in ascending order
-            outputAbsoluteRTB.AppendText(HuffmanListTree.Count().ToString() + "\n"); // Output number of elements in text
-            foreach(HuffmanElement huff in HuffmanListTree)
-            {
-                outputAbsoluteRTB.AppendText(huff.HuffmanAbsFreqOutput()+"\n"); // Frequency output
-            }
             if (HuffmanListTree.Count < 2)
             {
                 outputRTB.AppendText("Кількість ідентичних елементів в тексті повинна бути більше двох");
@@ -63,24 +56,13 @@ namespace HuffmanAlgorithm
                         outputRTB.AppendText("1");
                     }
                 }
-                //.....label5.Text = "Binary Encoded String Byte Count: " + HuffmanCodeMain.ToBinary(HuffmanCodeMain.ConvertToByteArray(inputString, Encoding.ASCII)).Length;
-                //.....label6.Text = "Huffman Encoded String Byte Count: " + outputRTB.Text.Length;
-
-                outputRTS.AppendText(HuffmanTree.Decode(encodedText, HuffmanTree.createHuffmanTree(HuffmanTree.createHuffmanKey(HuffmanListTree)))); //TEST
-                timeElapsed.Add(DateTime.Now);
-                // Перевірка на відповідність текстів "вхід та вихід"
-                if (inputRTB.Text.Equals(outputRTS.Text))
+                if (checkBox_WriteTreeInfo.Checked)
                 {
-                    richTextBox1.AppendText("Тексти відповідають один одному"); //debug
-                }
-                //Виведення ключа
-                foreach (string key in HuffmanTree.createHuffmanKey(HuffmanListTree))
-                {
-                    outputKey.AppendText(key + "\n");
+                    timeElapsed.Add(DateTime.Now);
+                    TimeSpan time = timeElapsed.ElementAt(1) - timeElapsed.ElementAt(0);
+                    Form_DebugInfo.Form_DebugInfoCall(HuffmanListTree, time);
                 }
             }
-            TimeSpan time = timeElapsed.ElementAt(1) - timeElapsed.ElementAt(0);
-            richTextBox1.AppendText("\n\nЧас виконання: " + time.TotalMinutes.ToString("f3") + " хв."); //debug
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -90,7 +72,6 @@ namespace HuffmanAlgorithm
 
         private void clearAllTB()
         {
-            outputAbsoluteRTB.Clear();
             outputRTB.Clear();
             outputRTS.Clear();
             inputRTB.Clear();
@@ -100,12 +81,14 @@ namespace HuffmanAlgorithm
         private void button_CreateKey_Click(object sender, EventArgs e)
         {
             outputKey.Clear();
+            timeElapsed.Clear();
+            timeElapsed.Add(DateTime.Now);
             string inputString = inputRTB.Text;
             List<HuffmanElement> HuffmanListTree = HuffmanCodeMain.getHuffmanElements(inputString); // create frequency table
             HuffmanListTree = HuffmanListTree.OrderBy(instance => instance.frequency).ToList(); // Sorting in ascending order
             if (HuffmanListTree.Count < 2)
             {
-                outputAbsoluteRTB.AppendText("Кількість ідентичних елементів в тексті повинна бути більше двох");
+                MessageBox.Show("Кількість ідентичних елементів в тексті повинна бути більше двох");
             }
             else
             {
@@ -119,21 +102,17 @@ namespace HuffmanAlgorithm
 
             if (checkBox_WriteTreeInfo.Checked)
             {
-                outputAbsoluteRTB.Clear();
-                foreach (HuffmanElement huff in HuffmanListTree)
-                {
-                    foreach (string s in huff.printTree())
-                    {
-                        outputAbsoluteRTB.AppendText(s + "\n");
-                    }
-                    outputAbsoluteRTB.AppendText("==================================================");
-                }
+                timeElapsed.Add(DateTime.Now);
+                TimeSpan time = timeElapsed.ElementAt(1) - timeElapsed.ElementAt(0);
+                Form_DebugInfo.Form_DebugInfoCall(HuffmanListTree, time);
             }
         }
 
         private void button_Decode_Click(object sender, EventArgs e)
         {
             outputRTS.Clear();
+            timeElapsed.Clear();
+            timeElapsed.Add(DateTime.Now);
             if (outputKey.Text.Length == 0)
             {
                 MessageBox.Show("You've didn't add the key for decoding");
@@ -144,10 +123,142 @@ namespace HuffmanAlgorithm
                 MessageBox.Show("You've didn't add text for decoding");
                 return;
             }
+            List<HuffmanElement> huffmanTree = HuffmanTree.createHuffmanTree(outputKey.Text.ToString().Split(new string[] { "101101" }, StringSplitOptions.RemoveEmptyEntries).ToList());
+            outputRTS.AppendText(HuffmanTree.Decode(HuffmanCodeMain.fromStringBinaryToBinary(outputRTB.Text), huffmanTree));
+            
+            if (checkBox_WriteTreeInfo.Checked)
+            {
+                timeElapsed.Add(DateTime.Now);
+                TimeSpan time = timeElapsed.ElementAt(1) - timeElapsed.ElementAt(0);
+                Form_DebugInfo.Form_DebugInfoCall(huffmanTree, time);
+            }
+        }
 
-            //outputKey.Text.ToList().ToString();
-            outputRTS.AppendText(HuffmanTree.Decode(HuffmanCodeMain.fromStringBinaryToBinary(outputRTB.Text), HuffmanTree.createHuffmanTree(outputKey.Text.ToString().Split(new string[] {"101101"}, StringSplitOptions.RemoveEmptyEntries).ToList())));
-            timeElapsed.Add(DateTime.Now);
+        private void button_SaveKey_Click(object sender, EventArgs e)
+        {
+            if (comboBox_SaveSelection.Text.Equals("Original Text"))
+            {
+                if (inputRTB.Text.Length == 0)
+                {
+                    MessageBox.Show("You have no text to save!");
+                    return;
+                }
+                else
+                {
+                    saveFile(inputRTB.Text, "originalText " + DateTime.Now + ".txt");
+                }
+            }
+            else if (comboBox_SaveSelection.Text.Equals("Key"))
+            {
+                if (outputKey.Text.Length == 0)
+                {
+                    MessageBox.Show("You have no key to save!");
+                    return;
+                }
+                else
+                {
+                    saveFile(outputKey.Text, "key " + DateTime.Now + ".txt");
+                }
+            }
+            else if (comboBox_SaveSelection.Text.Equals("Encoded Text"))
+            {
+                if (outputRTB.Text.Length == 0)
+                {
+                    MessageBox.Show("You have no encoded text to save!");
+                    return;
+                }
+                else
+                {
+                    saveFile(outputRTB.Text, "encodedText " + DateTime.Now + ".txt");
+                }
+            }
+            else if (comboBox_SaveSelection.Text.Equals("Decoded Text"))
+            {
+                if (outputRTS.Text.Length == 0)
+                {
+                    MessageBox.Show("You have no decoded text to save!");
+                    return;
+                }
+                else
+                {
+                    saveFile(outputRTS.Text, "decodedText " + DateTime.Now + ".txt");
+                }
+            }
+            /*else if (comboBox_SaveSelection.Text.Equals("Debug Info"))
+            {
+                if (inputRTB.Text.Length == 0)
+                {
+                    MessageBox.Show("You have no debug info to save!");
+                    return;
+                }
+                else
+                {
+
+                }
+            }*/
+        }
+
+        private void saveFile (string message, string filename)
+        {
+            try
+            {
+            filename = filename.Replace(' ', '_');
+            filename = filename.Replace(':', '.');
+            FileStream fParameter = new FileStream(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\" + filename, FileMode.Create, FileAccess.Write);
+            StreamWriter m_WriterParameter = new StreamWriter(fParameter);
+            m_WriterParameter.BaseStream.Seek(0, SeekOrigin.End);
+            m_WriterParameter.Write(message);
+            m_WriterParameter.Flush();
+            m_WriterParameter.Close();
+        }
+            catch (Exception e)
+            {
+                MessageBox.Show("Error!\n" + e.Message);
+            }
+}
+
+        private void loadFileToRichTB (string filepath, RichTextBox textBox)
+        {
+            try
+            {
+                using (StreamReader m_ReaderParameter = new StreamReader(filepath))
+                {
+                    textBox.Text = m_ReaderParameter.ReadToEnd();
+                    m_ReaderParameter.Close();
+                    m_ReaderParameter.Dispose();
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Error!\n" + e.Message);
+            }
+        }
+
+        private void button_LoadKey_Click(object sender, EventArgs e)
+        {
+            openFileDialog_loadFile.InitialDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            openFileDialog_loadFile.ShowDialog();
+
+            if (comboBox_SaveSelection.Text.Equals("Original Text"))
+            {
+                loadFileToRichTB(openFileDialog_loadFile.FileName, inputRTB);
+            }
+            else if (comboBox_SaveSelection.Text.Equals("Key"))
+            {
+                loadFileToRichTB(openFileDialog_loadFile.FileName, outputKey);
+            }
+            else if (comboBox_SaveSelection.Text.Equals("Encoded Text"))
+            {
+                loadFileToRichTB(openFileDialog_loadFile.FileName, outputRTB);
+            }
+            else if (comboBox_SaveSelection.Text.Equals("Decoded Text"))
+            {
+                loadFileToRichTB(openFileDialog_loadFile.FileName, outputRTS);
+            }
+            else if (comboBox_SaveSelection.Text.Equals("Debug Info"))
+            {
+                MessageBox.Show("You can't open Debug Info in this programm!\nUse your standart text editor for this.");
+            }
         }
     }
 }
