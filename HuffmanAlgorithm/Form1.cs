@@ -39,7 +39,7 @@ namespace HuffmanAlgorithm
             HuffmanListTree = HuffmanListTree.OrderBy(instance => instance.frequency).ToList(); // Sorting in ascending order
             if (HuffmanListTree.Count < 2)
             {
-                outputRTB.AppendText("Кількість ідентичних елементів в тексті повинна бути більше двох");
+                outputRTB.AppendText("There must be more than two unique symbols!");
             }
             else
             {
@@ -88,7 +88,7 @@ namespace HuffmanAlgorithm
             HuffmanListTree = HuffmanListTree.OrderBy(instance => instance.frequency).ToList(); // Sorting in ascending order
             if (HuffmanListTree.Count < 2)
             {
-                MessageBox.Show("Кількість ідентичних елементів в тексті повинна бути більше двох");
+                MessageBox.Show("There must be more than two unique symbols!");
             }
             else
             {
@@ -184,33 +184,22 @@ namespace HuffmanAlgorithm
                     saveFile(outputRTS.Text, "decodedText " + DateTime.Now + ".txt");
                 }
             }
-            /*else if (comboBox_SaveSelection.Text.Equals("Debug Info"))
-            {
-                if (inputRTB.Text.Length == 0)
-                {
-                    MessageBox.Show("You have no debug info to save!");
-                    return;
-                }
-                else
-                {
-
-                }
-            }*/
         }
 
         private void saveFile (string message, string filename)
         {
             try
             {
-            filename = filename.Replace(' ', '_');
-            filename = filename.Replace(':', '.');
-            FileStream fParameter = new FileStream(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\" + filename, FileMode.Create, FileAccess.Write);
-            StreamWriter m_WriterParameter = new StreamWriter(fParameter);
-            m_WriterParameter.BaseStream.Seek(0, SeekOrigin.End);
-            m_WriterParameter.Write(message);
-            m_WriterParameter.Flush();
-            m_WriterParameter.Close();
-        }
+                filename = filename.Replace(' ', '_');
+                filename = filename.Replace(':', '.');
+                FileStream fParameter = new FileStream(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\" + filename, FileMode.Create, FileAccess.Write);
+                StreamWriter m_WriterParameter = new StreamWriter(fParameter);
+                m_WriterParameter.BaseStream.Seek(0, SeekOrigin.End);
+                m_WriterParameter.Write(message);
+                m_WriterParameter.Flush();
+                m_WriterParameter.Close();
+                MessageBox.Show("File '" + filename + "' saved to " + System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location));
+            }
             catch (Exception e)
             {
                 MessageBox.Show("Error!\n" + e.Message);
@@ -254,10 +243,6 @@ namespace HuffmanAlgorithm
             else if (comboBox_SaveSelection.Text.Equals("Decoded Text"))
             {
                 loadFileToRichTB(openFileDialog_loadFile.FileName, outputRTS);
-            }
-            else if (comboBox_SaveSelection.Text.Equals("Debug Info"))
-            {
-                MessageBox.Show("You can't open Debug Info in this programm!\nUse your standart text editor for this.");
             }
         }
     }

@@ -185,9 +185,9 @@
             this.checkBox_WriteTreeInfo.AutoSize = true;
             this.checkBox_WriteTreeInfo.Location = new System.Drawing.Point(403, 161);
             this.checkBox_WriteTreeInfo.Name = "checkBox_WriteTreeInfo";
-            this.checkBox_WriteTreeInfo.Size = new System.Drawing.Size(103, 17);
+            this.checkBox_WriteTreeInfo.Size = new System.Drawing.Size(112, 17);
             this.checkBox_WriteTreeInfo.TabIndex = 23;
-            this.checkBox_WriteTreeInfo.Text = "Write Tree Info?";
+            this.checkBox_WriteTreeInfo.Text = "Show debug info?";
             this.checkBox_WriteTreeInfo.UseVisualStyleBackColor = true;
             // 
             // comboBox_SaveSelection
@@ -198,8 +198,7 @@
             "Original Text",
             "Key",
             "Encoded Text",
-            "Decoded Text",
-            "Debug Info"});
+            "Decoded Text"});
             this.comboBox_SaveSelection.Location = new System.Drawing.Point(596, 183);
             this.comboBox_SaveSelection.Name = "comboBox_SaveSelection";
             this.comboBox_SaveSelection.Size = new System.Drawing.Size(121, 21);
