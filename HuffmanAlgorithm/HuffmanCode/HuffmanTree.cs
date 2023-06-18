@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+// github: https://github.com/Kywz/HuffmanAlgorithm
+// This method contains main algorithms for huffman tree operations
+
 namespace HuffmanAlgorithm.HuffmanCode
 {
     class HuffmanTree

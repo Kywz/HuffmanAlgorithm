@@ -1,6 +1,6 @@
-This programm was created for educational purposes during course of "Data security" in sphere of Software Engineering.
+This programm was created for educational purposes as a part of bachelor's degree work.
 
-@Danil "Kywz" Strelyaev
+@Danylo "Kywz" Streliaiev
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Description:
 This program takes text, that is inputed by user (left-top text box), creates a frequencys list and a tree list (right-top text box), 
